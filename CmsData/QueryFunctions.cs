@@ -142,40 +142,16 @@ namespace CmsData
             return qb.Count();
         }
         /* QueryList is designed to run a pre-saved query referenced by name which is passed in as a string in the function call.
-         * for each people record returned from the query, we save a series of key values into a list (PersonList).
-         * The individual lists are combined into a combined list and returned from the function.
-         * These values can then be utilized in a Python Script to generate custom reports.
+         * The resulting collection of people records (limited to 1000) is returned as an IEnumerable to that all attributes of the 
+         * Person record is accessible
          */
-        public List<List<string>> QueryList(string s)
+        public IEnumerable<Person> QueryList(string s)
         {
-            var qb = Db.PeopleQuery2(s);
+            var qb = Db.PeopleQuery2(s).Take(1000);
             if (qb == null)
                 return null;
 
-            List<List<string>> CombinedList = new List<List<string>> ();
-            
-            foreach (var r in qb)
-            {
-                List<string> PersonList = new List<string>();
-                PersonList.Add(r.TitleCode);
-                PersonList.Add(r.Name);
-                PersonList.Add(r.PrimaryAddress);
-                PersonList.Add(r.PrimaryAddress2);
-                PersonList.Add(r.CityStateZip5);
-                PersonList.Add(r.HomePhone);
-                PersonList.Add(r.CellPhone);
-                PersonList.Add(r.EmailAddress);
-                PersonList.Add(r.EmailAddress2);
-                PersonList.Add(r.BirthDate.ToString());
-                PersonList.Add(r.BirthDay.ToString());
-                PersonList.Add(r.BirthMonth.ToString());
-                PersonList.Add(r.BirthYear.ToString());
-                PersonList.Add(r.Age.ToString());
-
-                CombinedList.Add(PersonList);
-            }
-
-            return CombinedList;
+            return qb;
         }
 
         public int StatusCount(string s)
