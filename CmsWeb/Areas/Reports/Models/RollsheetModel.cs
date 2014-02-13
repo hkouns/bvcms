@@ -25,7 +25,8 @@ namespace CmsWeb.Areas.Reports.Models
 		{
 			public int PeopleId { get; set; }
 			public string Name { get; set; }
-			public string Name2 { get; set; }
+            public string Name2 { get; set; }
+            public string SuffixCode { get; set; }
 			public string BirthDate { get; set; }
 			public string Age { get; set; }
 			public string Address { get; set; }
@@ -78,8 +79,8 @@ namespace CmsWeb.Areas.Reports.Models
 					select new PersonMemberInfo
 					{
 						PeopleId = p.PeopleId,
-						Name = p.Name,
-						Name2 = p.Name2,
+						Name = p.Name + p.SuffixCode,
+                        Name2 = p.Name2 + p.SuffixCode,
 						BirthDate = Util.FormatBirthday(
 							p.BirthYear,
 							p.BirthMonth,
@@ -124,8 +125,8 @@ namespace CmsWeb.Areas.Reports.Models
 		            select new PersonMemberInfo
 		                       {
 		                           PeopleId = p.PeopleId,
-		                           Name = p.Name,
-		                           Name2 = p.Name2,
+		                           Name = p.Name + p.SuffixCode,
+                                   Name2 = p.Name2 + p.SuffixCode,
 		                           BirthDate = Util.FormatBirthday(
 		                               p.BirthYear,
 		                               p.BirthMonth,
@@ -153,8 +154,8 @@ namespace CmsWeb.Areas.Reports.Models
 		            select new PersonMemberInfo
 		            {
 						PeopleId = m.PeopleId,
-						Name = m.PreferredName + " " + m.LastName,
-						Name2 = m.LastName + ", " + m.PreferredName,
+						Name = m.PreferredName + " " + m.LastName + m.SuffixCode,
+                        Name2 = m.LastName + ", " + m.PreferredName + m.SuffixCode,
 						BirthDate = Util.FormatBirthday(
 							m.BirthYear,
 							m.BirthMonth,
@@ -193,8 +194,8 @@ namespace CmsWeb.Areas.Reports.Models
 		            {
 						VisitorType = p.VisitorType,
 						PeopleId = p.PeopleId,
-						Name = p.PreferredName + " " + p.LastName,
-						Name2 = p.LastName + ", " + p.PreferredName,
+						Name = p.PreferredName + " " + p.LastName + p.SuffixCode,
+                        Name2 = p.LastName + ", " + p.PreferredName + p.SuffixCode,
 						BirthDate = Util.FormatBirthday(
 							p.BirthYear,
 							p.BirthMonth,
@@ -225,7 +226,8 @@ namespace CmsWeb.Areas.Reports.Models
 							   a,
 							   a.Person.Name2,
 							   a.Person.Age,
-							   a.Person.EmailAddress
+                               a.Person.EmailAddress,
+                               a.Person.SuffixCode
 						   }).ToList();
 
 			// Members at the time of the meeting
@@ -243,7 +245,7 @@ namespace CmsWeb.Areas.Reports.Models
 							 select new AttendInfo
 							 {
 								 PeopleId = p.PeopleId,
-								 Name = p.Name2,
+								 Name = p.Name2 + p.SuffixCode,
 								 Email = p.Email,
 								 Attended = pa != null && pa.a.AttendanceFlag,
 								 AttendCommitmentId = cid,
@@ -270,7 +272,7 @@ namespace CmsWeb.Areas.Reports.Models
 							  select new AttendInfo
 							  {
 								  PeopleId = pvisitor.PeopleId,
-								  Name = pvisitor.Name2,
+								  Name = pvisitor.Name2 + pvisitor.SuffixCode,
 								  Email = pvisitor.Email,
 								  Attended = pattender != null && pattender.a.AttendanceFlag,
 								  AttendCommitmentId = cid,
@@ -295,7 +297,7 @@ namespace CmsWeb.Areas.Reports.Models
 							select new AttendInfo
 							{
 								PeopleId = pa.a.PeopleId,
-								Name = pa.Name2,
+								Name = pa.Name2 + pa.SuffixCode,
 								Email = pa.EmailAddress,
 								Attended = true,
 								AttendCommitmentId = cid,

@@ -23,8 +23,10 @@ namespace CmsData.View
 		private int _FamilyId;
 		
 		private string _PreferredName;
-		
-		private string _LastName;
+
+        private string _LastName;
+
+        private string _SuffixCode;
 		
 		private int? _BirthYear;
 		
@@ -150,6 +152,22 @@ namespace CmsData.View
 			}
 
 		}
+
+        [Column(Name = "SuffixCode", Storage = "_SuffixCode", DbType = "nvarchar(10)")]
+        public string SuffixCode
+        {
+            get
+            {
+                return this._SuffixCode;
+            }
+
+            set
+            {
+                if (this._SuffixCode != value)
+                    this._SuffixCode = value;
+            }
+
+        }
 
 		
 		[Column(Name="BirthYear", Storage="_BirthYear", DbType="int")]
